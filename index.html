@@ -660,15 +660,17 @@
 
     .gallery-track {
       display: flex;
-      gap: 1.2rem;
+      gap: 0;
       overflow-x: auto;
-      padding: 0.5rem 2rem 1.5rem;
+      padding: 0.5rem 0 1.5rem;
       scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-      scrollbar-color: var(--color-border) transparent;
+      scrollbar-width: none;
       cursor: grab;
     }
+
+    .gallery-track::-webkit-scrollbar { display: none; }
 
     .gallery-track:active { cursor: grabbing; }
 
@@ -681,23 +683,22 @@
 
     /* ---- Activity cards ---- */
     .gallery-card {
-      flex: 0 0 auto;
-      scroll-snap-align: start;
-      width: 340px;
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+      width: 100%;
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       overflow: hidden;
-      transition: transform var(--transition), border-color var(--transition);
+      transition: border-color var(--transition);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
 
-    .gallery-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--color-accent);
-    }
+    .gallery-card:hover { border-color: var(--color-accent); }
 
     .gallery-card-img {
       width: 100%;
-      height: 210px;
+      height: 320px;
       object-fit: cover;
       display: block;
       filter: brightness(0.92);
@@ -707,7 +708,10 @@
     .gallery-card:hover .gallery-card-img { filter: brightness(1); }
 
     .gallery-card-body {
-      padding: 1.1rem 1.3rem 1.3rem;
+      padding: 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .gallery-card-tag {
@@ -732,25 +736,23 @@
       line-height: 1.6;
     }
 
-    /* ---- Project cards (wider, technical) ---- */
     .project-card {
-      flex: 0 0 auto;
-      scroll-snap-align: start;
-      width: 420px;
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+      width: 100%;
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       overflow: hidden;
-      transition: transform var(--transition), border-color var(--transition);
+      transition: border-color var(--transition);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
 
-    .project-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--color-accent-gold);
-    }
+    .project-card:hover { border-color: var(--color-accent-gold); }
 
     .project-card-img {
       width: 100%;
-      height: 240px;
+      height: 320px;
       object-fit: cover;
       object-position: top left;
       display: block;
@@ -762,7 +764,10 @@
     .project-card:hover .project-card-img { filter: brightness(1); }
 
     .project-card-body {
-      padding: 1.1rem 1.3rem 1.4rem;
+      padding: 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .project-card-tag {
@@ -787,13 +792,35 @@
       line-height: 1.6;
     }
 
+    /* Dot indicators */
+    .gallery-dots {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--color-border);
+      border-radius: 50%;
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: var(--color-accent);
+      width: 18px;
+      border-radius: 3px;
+    }
+
     /* Arrow nav buttons */
     .gallery-nav {
       display: flex;
+      align-items: center;
       gap: 0.6rem;
       margin-top: 1.2rem;
-      justify-content: flex-end;
-      padding-right: 2rem;
+      padding: 0 0.5rem;
     }
 
     .gallery-btn {
@@ -881,7 +908,7 @@
         <!-- ✏️ EDIT: Replace src with your own photo URL or a base64 image -->
         <div class="hero-photo-wrap">
           <img
-            src="Screenshot 2026-05-25 115846.png"
+            src="PREINCES_MARNYSON_A_MANUEL.jpg"
             alt="Preinces Marnyson A. Manuel"
             class="hero-photo"
           />
@@ -1098,20 +1125,28 @@
           </div>
 
           <div class="gallery-card">
-            <img src="2.png" alt="Site Visit Onyx Tower" class="gallery-card-img" />
+            <img src="2.png" alt="Seminar presentation" class="gallery-card-img" style="object-position: center right;" />
             <div class="gallery-card-body">
-              <p class="gallery-card-tag">Site Visit · Water Garden City</p>
-              <h3 class="gallery-card-title">Onyx Tower, Bahrain</h3>
-              <p class="gallery-card-desc">Site visit to the Onyx Tower at Water Garden City — observing ongoing construction works, structural progress, and the waterfront high-rise development.</p>
+              <p class="gallery-card-tag">Seminar · Bahrain</p>
+              <h3 class="gallery-card-title">Industry Expert Discussion</h3>
+              <p class="gallery-card-desc">Participating in technical Q&amp;A and networking with structural engineers and contractors from across the region.</p>
             </div>
           </div>
 
-
+          
         </div><!-- end track -->
       </div>
       <div class="gallery-nav">
-        <button class="gallery-btn" onclick="scrollGallery('activities-track', -1)">←</button>
-        <button class="gallery-btn" onclick="scrollGallery('activities-track', 1)">→</button>
+        <div class="gallery-dots" id="activities-track-dots">
+          <div class="dot active" onclick="scrollToCard('activities-track',0)"></div>
+          <div class="dot" onclick="scrollToCard('activities-track',1)"></div>
+          <div class="dot" onclick="scrollToCard('activities-track',2)"></div>
+          <div class="dot" onclick="scrollToCard('activities-track',3)"></div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:0.6rem;">
+          <button class="gallery-btn" onclick="scrollGallery('activities-track', -1)">←</button>
+          <button class="gallery-btn" onclick="scrollGallery('activities-track', 1)">→</button>
+        </div>
       </div>
     </div>
   </section>
@@ -1170,8 +1205,16 @@
         </div><!-- end track -->
       </div>
       <div class="gallery-nav">
-        <button class="gallery-btn" onclick="scrollGallery('projects-track', -1)">←</button>
-        <button class="gallery-btn" onclick="scrollGallery('projects-track', 1)">→</button>
+        <div class="gallery-dots" id="projects-track-dots">
+          <div class="dot active" onclick="scrollToCard('projects-track',0)"></div>
+          <div class="dot" onclick="scrollToCard('projects-track',1)"></div>
+          <div class="dot" onclick="scrollToCard('projects-track',2)"></div>
+          <div class="dot" onclick="scrollToCard('projects-track',3)"></div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:0.6rem;">
+          <button class="gallery-btn" onclick="scrollGallery('projects-track', -1)">←</button>
+          <button class="gallery-btn" onclick="scrollGallery('projects-track', 1)">→</button>
+        </div>
       </div>
     </div>
   </section>
@@ -1197,7 +1240,7 @@
 
         <div class="contact-item">
           <span class="contact-item-label">Phone</span>
-          <a href="09474021408" class="contact-item-value">09474021408</a>
+          <a href="tel 09474021408" class="contact-item-value">09474021408</a>
         </div>
 
         <div class="contact-item">
@@ -1224,28 +1267,46 @@
   </footer>
 
   <script>
-    // Horizontal gallery scroll helper
-    function scrollGallery(trackId, direction) {
+    function scrollToCard(trackId, index) {
       const track = document.getElementById(trackId);
-      const cardWidth = track.querySelector('[class$="-card"]')?.offsetWidth || 360;
-      track.scrollBy({ left: direction * (cardWidth + 16), behavior: 'smooth' });
+      track.scrollTo({ left: index * track.offsetWidth, behavior: 'smooth' });
     }
 
-    // Drag-to-scroll for all gallery tracks
+    function scrollGallery(trackId, direction) {
+      const track = document.getElementById(trackId);
+      const cardWidth = track.offsetWidth;
+      track.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
+    }
+
+    // Dot indicator sync
+    function updateDots(trackId) {
+      const track = document.getElementById(trackId);
+      const dotsWrap = document.getElementById(trackId + '-dots');
+      if (!dotsWrap) return;
+      const index = Math.round(track.scrollLeft / track.offsetWidth);
+      dotsWrap.querySelectorAll('.dot').forEach((d, i) => {
+        d.classList.toggle('active', i === index);
+      });
+    }
+
     document.querySelectorAll('.gallery-track').forEach(track => {
+      // Scroll → update dots
+      track.addEventListener('scroll', () => updateDots(track.id), { passive: true });
+
+      // Drag-to-scroll
       let isDown = false, startX, scrollLeft;
       track.addEventListener('mousedown', e => {
         isDown = true;
         startX = e.pageX - track.offsetLeft;
         scrollLeft = track.scrollLeft;
+        track.style.cursor = 'grabbing';
       });
-      track.addEventListener('mouseleave', () => isDown = false);
-      track.addEventListener('mouseup', () => isDown = false);
+      track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = 'grab'; });
+      track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = 'grab'; });
       track.addEventListener('mousemove', e => {
         if (!isDown) return;
         e.preventDefault();
-        const x = e.pageX - track.offsetLeft;
-        track.scrollLeft = scrollLeft - (x - startX) * 1.2;
+        track.scrollLeft = scrollLeft - (e.pageX - track.offsetLeft - startX) * 1.5;
       });
     });
   </script>
